@@ -1,3 +1,9 @@
+import { SignInButton } from '@clerk/nextjs'
+
 export default function Home() {
-  return <p className={'text-3xl font-medium text-sky-800'}>Hello world!</p>;
+  return (
+    <div>
+      <SignInButton />
+    </div>
+  )
 }
