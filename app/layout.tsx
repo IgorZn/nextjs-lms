@@ -22,10 +22,12 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang='en'>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <div className={'flex flex-col justify-around space-y-2 md:flex-row'}>
-          <Button>My First Button</Button>
-          <Button>My First Button</Button>
-          <Button>My First Button</Button>
+        <div className={'mt-2'}>
+          <div className={'flex flex-col items-center justify-around md:flex-row'}>
+            <Button>My First Button</Button>
+            <Button>My First Button</Button>
+            <Button>My First Button</Button>
+          </div>
         </div>
 
         {children}
