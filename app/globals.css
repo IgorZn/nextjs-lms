@@ -6,7 +6,7 @@ body {
     font-family: Arial, Helvetica, sans-serif;
 }
 
-.cl-footer{
+.cl-footer, .cl-userButtonPopoverFooter{
     display: none;
 }
 
@@ -80,5 +80,16 @@ body,
 
     body {
         @apply bg-background text-foreground;
+    }
+}
+
+
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+    }
+  body {
+    @apply bg-background text-foreground;
     }
 }

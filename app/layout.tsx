@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
-import { Button } from '@/components/ui/button'
 import { ClerkProvider } from '@clerk/nextjs'
 
 const geistSans = Geist({
@@ -23,17 +22,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <ClerkProvider>
       <html lang='en'>
-        <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-          <div className={'mt-2'}>
-            <div className={'flex flex-col items-center justify-around md:flex-row'}>
-              <Button>My First Button</Button>
-              <Button>My First Button</Button>
-              <Button>My First Button</Button>
-            </div>
-          </div>
-
-          {children}
-        </body>
+        <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>{children}</body>
       </html>
     </ClerkProvider>
   )
