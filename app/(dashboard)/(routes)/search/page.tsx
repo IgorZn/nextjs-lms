@@ -1,6 +1,6 @@
 import React from 'react'
 
-function SearchPage(props) {
+function SearchPage(props: object) {
   return <div className={''}>Search page</div>
 }
 

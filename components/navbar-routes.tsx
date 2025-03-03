@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import { LogOut } from 'lucide-react'
 import Link from 'next/link'
 
-function NavbarRoutes(props) {
+function NavbarRoutes(props: object) {
   const pathname = usePathname()
 
   const isTeacherPage = pathname?.startsWith('/teacher')
@@ -28,7 +28,7 @@ function NavbarRoutes(props) {
           </Button>
         </Link>
       )}
-      <UserButton className={'h-full'} aftersignouturl={'/'} />
+      <UserButton afterSignOutUrl={'/'} />
     </div>
   )
 }

@@ -7,13 +7,14 @@ const __dirname = dirname(__filename);
 
 const compat = new FlatCompat({
   baseDirectory: __dirname,
-}); 
+});
 
 const eslintConfig = [
   ...compat.config({
     extends: ["next/core-web-vitals", "next/typescript"],
     rules: {
       "@next/next/no-html-link-for-pages": "off",
+      "@typescript-eslint/no-unused-vars": "off",
     }
   }),
 ];

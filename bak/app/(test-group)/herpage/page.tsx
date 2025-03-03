@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button } from '@/components/ui/button'
 
-function Page(props) {
+function Page(props: object) {
   return (
     <div>
       <Button variant={'outline'}>1</Button>

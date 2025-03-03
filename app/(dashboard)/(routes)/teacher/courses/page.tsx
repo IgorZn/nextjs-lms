@@ -1,6 +1,6 @@
 import React from 'react'
 
-function Page(props) {
+function Page(props: object) {
   return <div>Course page!</div>
 }
 

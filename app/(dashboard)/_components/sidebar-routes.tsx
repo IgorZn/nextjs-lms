@@ -1,7 +1,7 @@
 'use client'
 import React from 'react'
 import { BarChart, Compass, Layout, List } from 'lucide-react'
-import SidebarItem from '@/app/(dashboard)/_components/sidebar-item'
+import SidebarItem, { SidebarItemProps } from '@/app/(dashboard)/_components/sidebar-item'
 import { usePathname } from 'next/navigation'
 
 const guestRoutes = [
@@ -30,16 +30,16 @@ const teacherRoutes = [
   },
 ]
 
-function SidebarRoutes(props) {
+function SidebarRoutes(props: object) {
   const pathname = usePathname()
   const isTeacherPage = pathname?.includes('/teacher')
-  const routes: Array<any> = isTeacherPage ? teacherRoutes : guestRoutes
+  const routes: Array<SidebarItemProps> = isTeacherPage ? teacherRoutes : guestRoutes
 
   return (
     <div className={'flex w-full flex-col'}>
       {routes.map((route, index) => (
         <div key={route.href}>
-          <SidebarItem icon={route.icon} label={route.label} href={route.href} {...route} />
+          <SidebarItem {...route} />
         </div>
       ))}
     </div>
