@@ -10,10 +10,12 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
+import axios, { AxiosResponse } from 'axios'
 
 const fromSchema = z.object({
   title: z.string().min(1, { message: 'Title is required' }),
 })
+
 function Page(props: object) {
   const router = useRouter()
   const form = useForm<z.infer<typeof fromSchema>>({
@@ -27,9 +29,8 @@ function Page(props: object) {
 
   const onSubmit = async (values: z.infer<typeof fromSchema>) => {
     try {
-      const response = await fetch('/api/courses', {
-        method: 'POST',
-        body: JSON.stringify(values),
+      const response: AxiosResponse = await axios.post('/api/courses', {
+        values,
       })
       router.push(`/teacher/courses/${response.data.id}`)
     } catch (e) {
