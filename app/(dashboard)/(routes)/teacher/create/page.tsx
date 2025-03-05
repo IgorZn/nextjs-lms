@@ -29,9 +29,7 @@ function Page(props: object) {
 
   const onSubmit = async (values: z.infer<typeof fromSchema>) => {
     try {
-      const response: AxiosResponse = await axios.post('/api/courses', {
-        values,
-      })
+      const response: AxiosResponse = await axios.post('/api/courses', values)
       router.push(`/teacher/courses/${response.data.id}`)
     } catch (e) {
       toast.error('Something went wrong')
