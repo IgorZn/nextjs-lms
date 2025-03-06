@@ -1,14 +1,49 @@
 /* eslint-disable */
 import React from 'react'
+import { db } from '@/lib/db'
+import { auth } from '@clerk/nextjs/server'
+import { redirect } from 'next/navigation'
+import { IconBadge } from '@/components/icon-badge'
+import { LayoutDashboard } from 'lucide-react'
 
-interface PageProps {
-  params: {
-    courseId: string
-  }
-}
+async function Page({ params }: { params: { courseId: Promise<string> } }) {
+  // https://stackoverflow.com/a/79143582/6671330
+  const { courseId } = await params
+  const { userId } = await auth()
 
-function Page({ params }: PageProps) {
-  return <div>Course: {params.courseId}</div>
+  const course = await db.course.findUnique({
+    where: {
+      id: courseId,
+    },
+  })
+
+  if (!userId || !course) return redirect('/')
+
+  // console.log('[COURSE_ID]', userId, course)
+  const requiredFields = [course.title, course.description, course.imageUrl, course.price, course.categoryId]
+  const totalFields = requiredFields.length
+  const completedFields = requiredFields.filter(Boolean).length
+  const completionText = `(${completedFields}/${totalFields})`
+
+  return (
+    <div className={'p-6'}>
+      <div className='flex items-center justify-between'>
+        <div className='flex flex-col gap-y-2'>
+          <h1 className='text-2xl font-medium'>Course Setup</h1>
+          <span className={'text-sm text-slate-700'}>Complete all fields {completionText}</span>
+        </div>
+      </div>
+      <div className='mt-6 grid grid-cols-1 gap-6 md:grid-cols-2'>
+        {/* title */}
+        <div>
+          <div className={'flex items-center gap-x-2'}>
+            <IconBadge icon={LayoutDashboard} />
+            <div className='text-xl'>Customize your course</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
 }
 
 export default Page
