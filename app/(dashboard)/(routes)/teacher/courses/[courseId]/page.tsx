@@ -6,6 +6,8 @@ import { redirect } from 'next/navigation'
 import { IconBadge } from '@/components/icon-badge'
 import { LayoutDashboard } from 'lucide-react'
 import TitleForm from '@/app/(dashboard)/(routes)/teacher/courses/[courseId]/_components/title-form'
+import { Description } from '@radix-ui/react-dialog'
+import DescriptionForm from '@/app/(dashboard)/(routes)/teacher/courses/[courseId]/_components/description-form'
 
 async function Page({ params }: { params: { courseId: Promise<string> } }) {
   // https://stackoverflow.com/a/79143582/6671330
@@ -42,6 +44,7 @@ async function Page({ params }: { params: { courseId: Promise<string> } }) {
             <h2 className='text-xl'>Customize your course</h2>
           </div>
           <TitleForm initialData={course} courseId={courseId} />
+          <DescriptionForm initialData={course} courseId={courseId} />
         </div>
       </div>
     </div>
