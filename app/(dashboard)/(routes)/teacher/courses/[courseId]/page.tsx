@@ -6,17 +6,19 @@ import { redirect } from 'next/navigation'
 import { IconBadge } from '@/components/icon-badge'
 import { LayoutDashboard } from 'lucide-react'
 import TitleForm from '@/app/(dashboard)/(routes)/teacher/courses/[courseId]/_components/title-form'
-import { Description } from '@radix-ui/react-dialog'
 import DescriptionForm from '@/app/(dashboard)/(routes)/teacher/courses/[courseId]/_components/description-form'
+import ImageForm from '@/app/(dashboard)/(routes)/teacher/courses/[courseId]/_components/image-form'
+import { Course } from '@prisma/client'
 
-async function Page({ params }: { params: { courseId: Promise<string> } }) {
+async function Page({ params }: Promise<{ params: { courseId: string } }>) {
   // https://stackoverflow.com/a/79143582/6671330
-  const { courseId } = await params
   const { userId } = await auth()
+  const param = await params
+  // console.log('await params>>>', param.courseId)
 
-  const course: Promise<any> = await db.course.findUnique({
+  const course: Promise<Course> = await db.course.findUnique({
     where: {
-      id: courseId,
+      id: param.courseId,
     },
   })
 
@@ -43,8 +45,9 @@ async function Page({ params }: { params: { courseId: Promise<string> } }) {
             <IconBadge icon={LayoutDashboard} />
             <h2 className='text-xl'>Customize your course</h2>
           </div>
-          <TitleForm initialData={course} courseId={courseId} />
-          <DescriptionForm initialData={course} courseId={courseId} />
+          <TitleForm initialData={course} courseId={param.courseId} />
+          <DescriptionForm initialData={course} courseId={param.courseId} />
+          <ImageForm initialData={course} courseId={param.courseId} />
         </div>
       </div>
     </div>

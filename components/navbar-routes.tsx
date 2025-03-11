@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { UserButton } from '@clerk/nextjs'
 import { usePathname } from 'next/navigation'
 import { Button } from '@/components/ui/button'
@@ -8,6 +8,11 @@ import Link from 'next/link'
 
 function NavbarRoutes(props: object) {
   const pathname = usePathname()
+  const [isClient, setIsClient] = useState(false)
+
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
 
   const isTeacherPage = pathname?.startsWith('/teacher')
   const isPlayerPage = pathname?.includes('/chapter')
@@ -28,7 +33,7 @@ function NavbarRoutes(props: object) {
           </Button>
         </Link>
       )}
-      <UserButton afterSignOutUrl={'/'} />
+      {isClient && <UserButton afterSignOutUrl={'/'} />}
     </div>
   )
 }
