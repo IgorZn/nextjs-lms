@@ -10,15 +10,15 @@ import DescriptionForm from '@/app/(dashboard)/(routes)/teacher/courses/[courseI
 import ImageForm from '@/app/(dashboard)/(routes)/teacher/courses/[courseId]/_components/image-form'
 import { Course } from '@prisma/client'
 
-async function Page({ params }: Promise<{ params: { courseId: string } }>) {
+async function Page({ params }: { params: { courseId: string } }) {
   // https://stackoverflow.com/a/79143582/6671330
   const { userId } = await auth()
-  const param = await params
+  // const param = await params
   // console.log('await params>>>', param.courseId)
 
-  const course: Promise<Course> = await db.course.findUnique({
+  const course = await db.course.findUnique({
     where: {
-      id: param.courseId,
+      id: params.courseId,
     },
   })
 
@@ -45,9 +45,9 @@ async function Page({ params }: Promise<{ params: { courseId: string } }>) {
             <IconBadge icon={LayoutDashboard} />
             <h2 className='text-xl'>Customize your course</h2>
           </div>
-          <TitleForm initialData={course} courseId={param.courseId} />
-          <DescriptionForm initialData={course} courseId={param.courseId} />
-          <ImageForm initialData={course} courseId={param.courseId} />
+          <TitleForm initialData={course} courseId={params.courseId} />
+          <DescriptionForm initialData={course} courseId={params.courseId} />
+          <ImageForm initialData={course} courseId={params.courseId} />
         </div>
       </div>
     </div>
