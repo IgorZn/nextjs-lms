@@ -9,6 +9,7 @@ import TitleForm from '@/app/(dashboard)/(routes)/teacher/courses/[courseId]/_co
 import DescriptionForm from '@/app/(dashboard)/(routes)/teacher/courses/[courseId]/_components/description-form'
 import ImageForm from '@/app/(dashboard)/(routes)/teacher/courses/[courseId]/_components/image-form'
 import { Course } from '@prisma/client'
+import CategoryForm from '@/app/(dashboard)/(routes)/teacher/courses/[courseId]/_components/category-form'
 
 async function Page({ params }: { params: { courseId: string } }) {
   // https://stackoverflow.com/a/79143582/6671330
@@ -21,6 +22,14 @@ async function Page({ params }: { params: { courseId: string } }) {
       id: params.courseId,
     },
   })
+
+  const categories = await db.category.findMany({
+    orderBy: {
+      name: 'asc',
+    },
+  })
+
+  // console.log(categories)
 
   if (!userId || !course) return redirect('/')
 
@@ -48,6 +57,14 @@ async function Page({ params }: { params: { courseId: string } }) {
           <TitleForm initialData={course} courseId={params.courseId} />
           <DescriptionForm initialData={course} courseId={params.courseId} />
           <ImageForm initialData={course} courseId={params.courseId} />
+          <CategoryForm
+            initialData={course}
+            courseId={params.courseId}
+            options={categories.map(category => ({
+              label: category.name,
+              value: category.id,
+            }))}
+          />
         </div>
       </div>
     </div>
