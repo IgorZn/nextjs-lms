@@ -12,19 +12,19 @@ import { Pencil } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Textarea } from '@/components/ui/textarea'
 import { Course } from '@prisma/client'
+import { Input } from '@/components/ui/input'
+import { formatPrice } from '@/lib/format'
 
-interface DescriptionFormProps {
+interface PriceFormProps {
   initialData: Course
   courseId: Promise<string>
 }
 
 const formSchema = z.object({
-  description: z.string().min(1, {
-    message: 'Description is required',
-  }),
+  price: z.coerce.number(),
 })
 
-function DescriptionForm({ initialData, courseId }: DescriptionFormProps) {
+function PriceForm({ initialData, courseId }: PriceFormProps) {
   const router = useRouter()
   const [isEditing, setIsEditing] = React.useState(false)
   const toggleEdit = () => {
@@ -32,14 +32,14 @@ function DescriptionForm({ initialData, courseId }: DescriptionFormProps) {
   }
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: { description: initialData?.description || '' },
+    defaultValues: { price: initialData?.price || undefined },
   })
 
   const { isSubmitting, isValid } = form.formState
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       await axios.patch(`/api/courses/${courseId}`, values)
-      toast.success('Course updated')
+      toast.success('Course price updated')
       toggleEdit()
       router.refresh()
     } catch (e) {
@@ -49,21 +49,21 @@ function DescriptionForm({ initialData, courseId }: DescriptionFormProps) {
   return (
     <div className={'mt-6 rounded-md border bg-slate-100 p-2'}>
       <div className='flex items-center justify-between font-medium'>
-        Course description
+        Course price
         <Button onClick={toggleEdit} variant={'ghost'}>
           {isEditing ? (
             <>Cancel</>
           ) : (
             <>
               <Pencil className={'mr-2 h-4 w-4'} />
-              Edit description
+              Edit price
             </>
           )}
         </Button>
       </div>
       {!isEditing && (
-        <p className={cn('mt-2 text-sm', !initialData.description && 'italic text-slate-500')}>
-          {initialData.description || 'No description'}
+        <p className={cn('mt-2 text-sm', !initialData.price && 'italic text-slate-500')}>
+          {initialData.price ? formatPrice(initialData.price) : 'No price'}
         </p>
       )}
       {isEditing && (
@@ -71,15 +71,17 @@ function DescriptionForm({ initialData, courseId }: DescriptionFormProps) {
           <form onSubmit={form.handleSubmit(onSubmit)} className={'mt-4 space-y-4'}>
             <FormField
               control={form.control}
-              name='description'
+              name='price'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Description</FormLabel>
                   <FormControl>
-                    <Textarea
+                    <Input
+                      type={'number'}
+                      step={'0.01'}
                       className={'bg-white'}
                       disabled={isSubmitting}
-                      placeholder='e.g. "This course is about..."'
+                      placeholder='e.g. "Set a price for course"'
                       {...field}
                     />
                   </FormControl>
@@ -99,4 +101,4 @@ function DescriptionForm({ initialData, courseId }: DescriptionFormProps) {
   )
 }
 
-export default DescriptionForm
+export default PriceForm

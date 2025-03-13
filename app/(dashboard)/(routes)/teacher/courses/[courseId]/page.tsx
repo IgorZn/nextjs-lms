@@ -4,12 +4,12 @@ import { db } from '@/lib/db'
 import { auth } from '@clerk/nextjs/server'
 import { redirect } from 'next/navigation'
 import { IconBadge } from '@/components/icon-badge'
-import { LayoutDashboard } from 'lucide-react'
-import TitleForm from '@/app/(dashboard)/(routes)/teacher/courses/[courseId]/_components/title-form'
-import DescriptionForm from '@/app/(dashboard)/(routes)/teacher/courses/[courseId]/_components/description-form'
-import ImageForm from '@/app/(dashboard)/(routes)/teacher/courses/[courseId]/_components/image-form'
-import { Course } from '@prisma/client'
-import CategoryForm from '@/app/(dashboard)/(routes)/teacher/courses/[courseId]/_components/category-form'
+import { CircleDollarSign, LayoutDashboard, ListChecks } from 'lucide-react'
+import TitleForm from '@teacher/courses/[courseId]/_components/title-form'
+import DescriptionForm from '@teacher/courses/[courseId]/_components/description-form'
+import ImageForm from '@teacher/courses/[courseId]/_components/image-form'
+import CategoryForm from '@teacher/courses/[courseId]/_components/category-form'
+import PriceForm from '@teacher/courses/[courseId]/_components/price-form'
 
 async function Page({ params }: { params: { courseId: string } }) {
   // https://stackoverflow.com/a/79143582/6671330
@@ -65,6 +65,20 @@ async function Page({ params }: { params: { courseId: string } }) {
               value: category.id,
             }))}
           />
+        </div>
+        <div className='space-y-6'>
+          <div>
+            <div className={'item-center flex gap-x-2'}>
+              <IconBadge icon={ListChecks} />
+              <h2 className={'text-xl'}></h2>
+            </div>
+            <div>TODO: Chapters</div>
+          </div>
+          <div className={'flex items-center gap-x-2'}>
+            <IconBadge icon={CircleDollarSign} />
+            <h2 className={'text-xl'}>Sell you course</h2>
+          </div>
+          <PriceForm initialData={course} courseId={params.courseId} />
         </div>
       </div>
     </div>
