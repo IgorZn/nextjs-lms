@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from 'react'
 import { db } from '@/lib/db'
 import { auth } from '@clerk/nextjs/server'
@@ -11,18 +10,27 @@ import ImageForm from '@teacher/courses/[courseId]/_components/image-form'
 import CategoryForm from '@teacher/courses/[courseId]/_components/category-form'
 import PriceForm from '@teacher/courses/[courseId]/_components/price-form'
 import AttachmentForm from '@teacher/courses/[courseId]/_components/attachment-form'
+import ChaptersForm from '@teacher/courses/[courseId]/_components/chapters-form'
 
-async function Page({ params }: { params: { courseId: string } }) {
+async function Page({ params }: { params: { courseId: Promise<string> } }) {
   // https://stackoverflow.com/a/79143582/6671330
   const { userId } = await auth()
-  // const param = await params
+  const param = await params
   // console.log('await params>>>', param.courseId)
+
+  if (!userId) return redirect('/')
 
   const course = await db.course.findUnique({
     where: {
-      id: params.courseId,
+      id: param.courseId,
+      userId,
     },
     include: {
+      chapters: {
+        orderBy: {
+          position: 'asc',
+        },
+      },
       attachments: {
         orderBy: {
           createdAt: 'desc',
@@ -39,10 +47,15 @@ async function Page({ params }: { params: { courseId: string } }) {
 
   // console.log(categories)
 
-  if (!userId || !course) return redirect('/')
-
   // console.log('[COURSE_ID]', userId, course)
-  const requiredFields = [course.title, course.description, course.imageUrl, course.price, course.categoryId]
+  const requiredFields = [
+    course.chapters.some(chapter => chapter.isPublished),
+    course.title,
+    course.description,
+    course.imageUrl,
+    course.price,
+    course.categoryId,
+  ]
   const totalFields = requiredFields.length
   const completedFields = requiredFields.filter(Boolean).length
   const completionText = `(${completedFields}/${totalFields})`
@@ -62,12 +75,12 @@ async function Page({ params }: { params: { courseId: string } }) {
             <IconBadge icon={LayoutDashboard} />
             <h2 className='text-xl'>Customize your course</h2>
           </div>
-          <TitleForm initialData={course} courseId={params.courseId} />
-          <DescriptionForm initialData={course} courseId={params.courseId} />
-          <ImageForm initialData={course} courseId={params.courseId} />
+          <TitleForm initialData={course} courseId={param.courseId} />
+          <DescriptionForm initialData={course} courseId={param.courseId} />
+          <ImageForm initialData={course} courseId={param.courseId} />
           <CategoryForm
             initialData={course}
-            courseId={params.courseId}
+            courseId={param.courseId}
             options={categories.map(category => ({
               label: category.name,
               value: category.id,
@@ -80,19 +93,19 @@ async function Page({ params }: { params: { courseId: string } }) {
               <IconBadge icon={ListChecks} />
               <h2 className={'text-xl'}></h2>
             </div>
-            <div>TODO: Chapters</div>
+            <ChaptersForm initialData={course} courseId={param.courseId} />
           </div>
           <div className={'flex items-center gap-x-2'}>
             <IconBadge icon={CircleDollarSign} />
             <h2 className={'text-xl'}>Sell you course</h2>
           </div>
-          <PriceForm initialData={course} courseId={params.courseId} />
+          <PriceForm initialData={course} courseId={param.courseId} />
           <div>
             <div className={'flex items-center gap-x-2'}>
               <IconBadge icon={FileIcon} />
               <h2 className={'text-xl'}>Resources & Attachments</h2>
             </div>
-            <AttachmentForm initialData={course} courseId={params.courseId} />
+            <AttachmentForm initialData={course} courseId={param.courseId} />
           </div>
         </div>
       </div>
