@@ -39,6 +39,8 @@ async function Page({ params }: { params: { courseId: Promise<string> } }) {
     },
   })
 
+  console.log('course_raw', course)
+
   const categories = await db.category.findMany({
     orderBy: {
       name: 'asc',
