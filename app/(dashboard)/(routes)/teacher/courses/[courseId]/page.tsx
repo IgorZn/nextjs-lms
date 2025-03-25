@@ -39,7 +39,10 @@ async function Page({ params }: { params: { courseId: Promise<string> } }) {
     },
   })
 
-  console.log('course_raw', course)
+  if (!course) {
+    console.log('course_raw', course)
+    return redirect('/')
+  }
 
   const categories = await db.category.findMany({
     orderBy: {

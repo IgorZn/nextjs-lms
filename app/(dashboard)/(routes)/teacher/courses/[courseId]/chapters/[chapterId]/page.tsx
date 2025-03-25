@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { ArrowLeft, LayoutDashboard } from 'lucide-react'
 import { IconBadge } from '@/components/icon-badge'
 import ChapterTitleForm from '@teacher/courses/[courseId]/chapters/[chapterId]/_components/chapter-title-form'
+import ChapterDescriptionForm from '@teacher/courses/[courseId]/chapters/[chapterId]/_components/chapter-description-form'
 
 async function Page({ params }: { params: { courseId: Promise<string>; chapterId: Promise<string> } }) {
   const userId = await auth()
@@ -59,6 +60,7 @@ async function Page({ params }: { params: { courseId: Promise<string>; chapterId
               <h2 className={'text-xl'}>Customize your chapter</h2>
             </div>
             <ChapterTitleForm initialData={chapter} courseId={courseId} chapterId={chapterId} />
+            <ChapterDescriptionForm initialData={chapter} courseId={courseId} chapterId={chapterId} />
           </div>
         </div>
       </div>
