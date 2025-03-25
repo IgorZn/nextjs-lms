@@ -3,10 +3,11 @@ import { auth } from '@clerk/nextjs/server'
 import { redirect } from 'next/navigation'
 import { db } from '@/lib/db'
 import Link from 'next/link'
-import { ArrowLeft, LayoutDashboard } from 'lucide-react'
+import { ArrowLeft, Eye, LayoutDashboard, Video } from 'lucide-react'
 import { IconBadge } from '@/components/icon-badge'
 import ChapterTitleForm from '@teacher/courses/[courseId]/chapters/[chapterId]/_components/chapter-title-form'
 import ChapterDescriptionForm from '@teacher/courses/[courseId]/chapters/[chapterId]/_components/chapter-description-form'
+import ChapterAccessForm from '@teacher/courses/[courseId]/chapters/[chapterId]/_components/chapter-access-form'
 
 async function Page({ params }: { params: { courseId: Promise<string>; chapterId: Promise<string> } }) {
   const userId = await auth()
@@ -61,6 +62,17 @@ async function Page({ params }: { params: { courseId: Promise<string>; chapterId
             </div>
             <ChapterTitleForm initialData={chapter} courseId={courseId} chapterId={chapterId} />
             <ChapterDescriptionForm initialData={chapter} courseId={courseId} chapterId={chapterId} />
+          </div>
+          <div className={'flex items-center gap-x-2'}>
+            <IconBadge icon={Eye} />
+            <h2 className={'text-xl'}>Access Settings</h2>
+          </div>
+          <ChapterAccessForm initialData={chapter} courseId={courseId} chapterId={chapterId} />
+        </div>
+        <div>
+          <div className={'flex items-center gap-x-2'}>
+            <IconBadge icon={Video} />
+            <h2>Upload a video</h2>
           </div>
         </div>
       </div>
