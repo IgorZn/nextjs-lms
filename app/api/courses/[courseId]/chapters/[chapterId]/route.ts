@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@clerk/nextjs/server'
 import { db } from '@/lib/db'
+import { muxMain } from '@/lib/video_mux'
 
 export async function PATCH(req: NextRequest, { params }: { params: { courseId: string; chapterId: string } }) {
   try {
@@ -35,11 +36,38 @@ export async function PATCH(req: NextRequest, { params }: { params: { courseId: 
       },
     })
 
-    // TODO handle videoUrl
+    if (values.videoUrl) {
+      const existMuxData = await db.muxData.findFirst({
+        where: {
+          chapterId,
+        },
+      })
+
+      // delete old video
+      if (existMuxData) {
+        await muxMain().deleteAsset(existMuxData.assetId)
+        await db.muxData.delete({
+          where: {
+            id: existMuxData.id,
+          },
+        })
+      }
+
+      // create new
+      const asset = await muxMain().createAsset(values.videoUrl)
+      console.log('[PATCH][COURSE_CHAPTER_ID] asset', asset)
+      await db.muxData.create({
+        data: {
+          chapterId,
+          assetId: asset.id,
+          playbackId: asset.playback_ids[0].id,
+        },
+      })
+    }
 
     return NextResponse.json(chapter)
   } catch (e) {
-    console.log('[PATCH][COURSE_CHAPTER_ID]', e.message)
+    console.log('[ERR][PATCH][COURSE_CHAPTER_ID]', e.message)
     return new NextResponse('Internal Server Error', { status: 500 })
   }
 }

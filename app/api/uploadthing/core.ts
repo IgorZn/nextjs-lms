@@ -3,6 +3,7 @@ import { UploadThingError } from 'uploadthing/server'
 import { auth } from '@clerk/nextjs/server'
 
 const f = createUploadthing()
+
 const handleAuth = async (): Promise<{ userId: string }> => {
   const { userId } = await auth()
   if (!userId) throw new UploadThingError('Unauthorized')

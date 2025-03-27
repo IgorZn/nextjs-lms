@@ -8,6 +8,7 @@ import { IconBadge } from '@/components/icon-badge'
 import ChapterTitleForm from '@teacher/courses/[courseId]/chapters/[chapterId]/_components/chapter-title-form'
 import ChapterDescriptionForm from '@teacher/courses/[courseId]/chapters/[chapterId]/_components/chapter-description-form'
 import ChapterAccessForm from '@teacher/courses/[courseId]/chapters/[chapterId]/_components/chapter-access-form'
+import ChapterVideoForm from '@teacher/courses/[courseId]/chapters/[chapterId]/_components/chapter-video-form'
 
 async function Page({ params }: { params: { courseId: Promise<string>; chapterId: Promise<string> } }) {
   const userId = await auth()
@@ -74,6 +75,7 @@ async function Page({ params }: { params: { courseId: Promise<string>; chapterId
             <IconBadge icon={Video} />
             <h2>Upload a video</h2>
           </div>
+          <ChapterVideoForm initialData={chapter} courseId={courseId} chapterId={chapterId} />
         </div>
       </div>
     </div>
