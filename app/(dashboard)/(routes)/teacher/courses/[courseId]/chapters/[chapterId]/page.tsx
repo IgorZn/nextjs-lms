@@ -9,6 +9,7 @@ import ChapterTitleForm from '@teacher/courses/[courseId]/chapters/[chapterId]/_
 import ChapterDescriptionForm from '@teacher/courses/[courseId]/chapters/[chapterId]/_components/chapter-description-form'
 import ChapterAccessForm from '@teacher/courses/[courseId]/chapters/[chapterId]/_components/chapter-access-form'
 import ChapterVideoForm from '@teacher/courses/[courseId]/chapters/[chapterId]/_components/chapter-video-form'
+import Banner from '@/components/banner'
 
 async function Page({ params }: { params: { courseId: Promise<string>; chapterId: Promise<string> } }) {
   const userId = await auth()
@@ -36,49 +37,52 @@ async function Page({ params }: { params: { courseId: Promise<string>; chapterId
   const completionText = `(${completedFields}/${totalFields})`
 
   return (
-    <div className={'p-6'}>
-      <div className={'flex items-center justify-center'}>
-        <div className={'w-full'}>
-          <Link
-            href={`/teacher/courses/${courseId}`}
-            className={'mb-6 flex items-center text-sm transition hover:opacity-75'}>
-            <ArrowLeft className={'mr-2 h-4 w-4'} />
-            Back to course setup
-          </Link>
-          <div className={'flex w-full items-center justify-center'}>
-            <div className={'flex flex-col gap-y-2'}>
-              <h1 className={'text-2xl font-medium'}>Chapter Creation</h1>
-              <span className={'text-sm text-slate-700'}>Complete all fields {completionText}</span>
+    <>
+      {!chapter.isPublished && <Banner label={'This chapter is not published'} variant={'warning'} />}
+      <div className={'p-6'}>
+        <div className={'flex items-center justify-center'}>
+          <div className={'w-full'}>
+            <Link
+              href={`/teacher/courses/${courseId}`}
+              className={'mb-6 flex items-center text-sm transition hover:opacity-75'}>
+              <ArrowLeft className={'mr-2 h-4 w-4'} />
+              Back to course setup
+            </Link>
+            <div className={'flex w-full items-center justify-center'}>
+              <div className={'flex flex-col gap-y-2'}>
+                <h1 className={'text-2xl font-medium'}>Chapter Creation</h1>
+                <span className={'text-sm text-slate-700'}>Complete all fields {completionText}</span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      {/*  */}
-      <div className={'mt-16 grid grid-cols-1 gap-6 md:grid-cols-2'}>
-        <div className={'space-y-4'}>
+        {/*  */}
+        <div className={'mt-16 grid grid-cols-1 gap-6 md:grid-cols-2'}>
+          <div className={'space-y-4'}>
+            <div>
+              <div className={'flex items-center gap-x-2'}>
+                <IconBadge icon={LayoutDashboard} />
+                <h2 className={'text-xl'}>Customize your chapter</h2>
+              </div>
+              <ChapterTitleForm initialData={chapter} courseId={courseId} chapterId={chapterId} />
+              <ChapterDescriptionForm initialData={chapter} courseId={courseId} chapterId={chapterId} />
+            </div>
+            <div className={'flex items-center gap-x-2'}>
+              <IconBadge icon={Eye} />
+              <h2 className={'text-xl'}>Access Settings</h2>
+            </div>
+            <ChapterAccessForm initialData={chapter} courseId={courseId} chapterId={chapterId} />
+          </div>
           <div>
             <div className={'flex items-center gap-x-2'}>
-              <IconBadge icon={LayoutDashboard} />
-              <h2 className={'text-xl'}>Customize your chapter</h2>
+              <IconBadge icon={Video} />
+              <h2>Upload a video</h2>
             </div>
-            <ChapterTitleForm initialData={chapter} courseId={courseId} chapterId={chapterId} />
-            <ChapterDescriptionForm initialData={chapter} courseId={courseId} chapterId={chapterId} />
+            <ChapterVideoForm initialData={chapter} courseId={courseId} chapterId={chapterId} />
           </div>
-          <div className={'flex items-center gap-x-2'}>
-            <IconBadge icon={Eye} />
-            <h2 className={'text-xl'}>Access Settings</h2>
-          </div>
-          <ChapterAccessForm initialData={chapter} courseId={courseId} chapterId={chapterId} />
-        </div>
-        <div>
-          <div className={'flex items-center gap-x-2'}>
-            <IconBadge icon={Video} />
-            <h2>Upload a video</h2>
-          </div>
-          <ChapterVideoForm initialData={chapter} courseId={courseId} chapterId={chapterId} />
         </div>
       </div>
-    </div>
+    </>
   )
 }
 
