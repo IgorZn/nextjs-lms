@@ -5,11 +5,12 @@ import { db } from '@/lib/db'
 import Link from 'next/link'
 import { ArrowLeft, Eye, LayoutDashboard, Video } from 'lucide-react'
 import { IconBadge } from '@/components/icon-badge'
-import ChapterTitleForm from '@teacher/courses/[courseId]/chapters/[chapterId]/_components/chapter-title-form'
-import ChapterDescriptionForm from '@teacher/courses/[courseId]/chapters/[chapterId]/_components/chapter-description-form'
-import ChapterAccessForm from '@teacher/courses/[courseId]/chapters/[chapterId]/_components/chapter-access-form'
-import ChapterVideoForm from '@teacher/courses/[courseId]/chapters/[chapterId]/_components/chapter-video-form'
+import ChapterTitleForm from '@chapterId/_components/chapter-title-form'
+import ChapterDescriptionForm from '@chapterId/_components/chapter-description-form'
+import ChapterAccessForm from '@chapterId/_components/chapter-access-form'
+import ChapterVideoForm from '@chapterId/_components/chapter-video-form'
 import Banner from '@/components/banner'
+import ChapterActions from '@chapterId/_components/chapter-actions'
 
 async function Page({ params }: { params: { courseId: Promise<string>; chapterId: Promise<string> } }) {
   const userId = await auth()
@@ -35,6 +36,7 @@ async function Page({ params }: { params: { courseId: Promise<string>; chapterId
   const completedFields = requiredFields.filter(Boolean).length
 
   const completionText = `(${completedFields}/${totalFields})`
+  const isComplete = requiredFields.every(Boolean)
 
   return (
     <>
@@ -54,6 +56,12 @@ async function Page({ params }: { params: { courseId: Promise<string>; chapterId
                 <span className={'text-sm text-slate-700'}>Complete all fields {completionText}</span>
               </div>
             </div>
+            <ChapterActions
+              disabled={!isComplete}
+              courseId={courseId}
+              chapterId={chapterId}
+              isPublished={chapter.isPublished}
+            />
           </div>
         </div>
         {/*  */}
