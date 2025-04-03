@@ -7,7 +7,7 @@ export async function POST(req: NextRequest, { params }: { params: { courseId: P
   try {
     const { userId } = await auth()
     const { title } = await req.json()
-    const courseId = await params.courseId
+    const { courseId } = await params
 
     if (!userId) {
       return new NextResponse('Unauthorized', { status: 401 })

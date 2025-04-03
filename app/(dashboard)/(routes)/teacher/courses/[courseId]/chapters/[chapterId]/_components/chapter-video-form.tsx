@@ -5,7 +5,7 @@ import axios from 'axios'
 import { toast } from 'react-hot-toast'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
-import { ImageIcon, Pencil, PlusCircle, Video } from 'lucide-react'
+import { Pencil, PlusCircle, Video } from 'lucide-react'
 import { Chapter, MuxData } from '@prisma/client'
 import FileUpload from '@/components/file-upload'
 
@@ -85,7 +85,7 @@ function ChapterVideoForm({ initialData, courseId, chapterId }: ChapterVideoForm
         </div>
       )}
       {initialData.videoUrl && !isEditing && (
-        <div className={'mt-2 text-sm text-muted-foreground'}>Video can take a fiw minute to process</div>
+        <div className={'mt-2 text-sm text-muted-foreground'}>Video can take a few minute to process</div>
       )}
     </div>
   )

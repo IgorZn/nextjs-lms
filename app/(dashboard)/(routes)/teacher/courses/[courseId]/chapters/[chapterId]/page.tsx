@@ -56,12 +56,14 @@ async function Page({ params }: { params: { courseId: Promise<string>; chapterId
                 <span className={'text-sm text-slate-700'}>Complete all fields {completionText}</span>
               </div>
             </div>
-            <ChapterActions
-              disabled={!isComplete}
-              courseId={courseId}
-              chapterId={chapterId}
-              isPublished={chapter.isPublished}
-            />
+            <div className={'relative'}>
+              <ChapterActions
+                disabled={!isComplete}
+                courseId={courseId}
+                chapterId={chapterId}
+                isPublished={chapter.isPublished}
+              />
+            </div>
           </div>
         </div>
         {/*  */}
