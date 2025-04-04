@@ -8,10 +8,11 @@ const client = new Mux({
 export function muxMain() {
   return {
     deleteAsset: async id => {
+      console.log('[Mux][deleteAsset] id', id)
       return client.video.assets.delete(id)
     },
     createAsset: async (url, policy = 'public') => {
-      console.log('[createAsset] url', url)
+      console.log('[Mux][createAsset] url', url)
       return client.video.assets.create({ input: [{ url: url }], playback_policy: policy })
     },
   }
