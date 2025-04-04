@@ -1,13 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@clerk/nextjs/server'
 import { db } from '@/lib/db'
-import { Course } from '@prisma/client'
 
 export async function POST(req: NextRequest, { params }: { params: { courseId: Promise<string> } }) {
   try {
     const { userId } = await auth()
     const { title } = await req.json()
-    const { courseId } = await params
+    const courseId = await params.courseId
 
     if (!userId) {
       return new NextResponse('Unauthorized', { status: 401 })
@@ -24,9 +23,9 @@ export async function POST(req: NextRequest, { params }: { params: { courseId: P
       return new NextResponse('Unauthorized', { status: 401 })
     }
 
-    const lastChapter: Course = await db.chapter.findFirst({
+    const lastChapter = await db.chapter.findFirst({
       where: {
-        courseId,
+        courseId: courseId,
       },
       orderBy: {
         position: 'desc',

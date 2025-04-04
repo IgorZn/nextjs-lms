@@ -7,7 +7,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { courseId: 
   try {
     const { userId } = await auth()
     const values = await req.json()
-    const { courseId } = await params
+    const courseId = await params.courseId
 
     if (!userId) return new NextResponse('Unauthorized', { status: 401 })
 
@@ -30,7 +30,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { courseId: 
 export async function DELETE(req: NextRequest, { params }: { params: { courseId: Promise<string> } }) {
   try {
     const { userId } = await auth()
-    const { courseId } = await params
+    const courseId = await params.courseId
 
     if (!userId) return new NextResponse('Unauthorized', { status: 401 })
 
@@ -46,11 +46,17 @@ export async function DELETE(req: NextRequest, { params }: { params: { courseId:
 
     if (!course) return new NextResponse('Not found', { status: 404 })
 
-    course.chapters.map(async chapter => {
-      if (chapter.muxData?.assetId) {
-        await muxMain().deleteAsset(chapter.muxData.assetId)
-      }
-    })
+    if (Array.isArray(course.chapters)) {
+      await Promise.all(
+        course.chapters.map(async chapter => {
+          if (chapter.muxData?.assetId) {
+            await muxMain().deleteAsset(chapter.muxData.assetId)
+          }
+        })
+      )
+    } else {
+      console.error('Chapters is not an array or is undefined:', course.chapters)
+    }
 
     const deletedCourse = await db.course.delete({
       where: {
