@@ -8,11 +8,16 @@ import {
   getSortedRowModel,
   SortingState,
   useReactTable,
+  ColumnFiltersState,
+  getFilteredRowModel,
 } from '@tanstack/react-table'
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import { ReactNode, useState } from 'react'
+import Link from 'next/link'
+import { PlusCircle } from 'lucide-react'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -21,6 +26,7 @@ interface DataTableProps<TData, TValue> {
 
 export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
 
   const table = useReactTable({
     data,
@@ -28,14 +34,35 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
+    getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
     state: {
       sorting,
+      columnFilters,
     },
   })
 
   return (
     <>
+      {/* Filter*/}
+      <div className='flex items-center justify-between py-4'>
+        <Input
+          placeholder='Filter courses...'
+          value={(table.getColumn('title')?.getFilterValue() as string) ?? ''}
+          onChange={event => table.getColumn('title')?.setFilterValue(event.target.value)}
+          className='max-w-sm'
+        />
+
+        <Link href={'/teacher/create'}>
+          <Button>
+            <PlusCircle className='mr-2 h-4 w-4' />
+            New Course
+          </Button>
+        </Link>
+      </div>
+
+      {/* Table */}
       <div className='rounded-md border'>
         <Table>
           <TableHeader>
