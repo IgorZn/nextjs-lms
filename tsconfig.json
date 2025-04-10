@@ -21,6 +21,7 @@
     "paths": {
       "@/*": ["./*"],
       "@teacher/*": ["./app/(dashboard)/(routes)/teacher/*"],
+      "@search/*": ["./app/(dashboard)/(routes)/search/*"],
       "@courseId/*": ["./app/(dashboard)/(routes)/teacher/courses/[courseId]/*"],
       "@chapterId/*": ["./app/(dashboard)/(routes)/teacher/courses/[courseId]/chapters/[chapterId]/*"]
     }
