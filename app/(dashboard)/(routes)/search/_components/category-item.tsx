@@ -5,6 +5,7 @@ import { Icon } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { IconType } from 'react-icons'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { Suspense } from 'react'
 
 type CategoryItemProps = {
   label: string
@@ -19,7 +20,7 @@ function CategoryItem({ label, icon: Icon, value }: CategoryItemProps) {
 
   const currentCatId = searchParams.get('categoryId')
   const currentTitle = searchParams.get('title')
-  console.log('currentCatId, currentTitle>>>', currentCatId, currentTitle)
+  // console.log('currentCatId, currentTitle>>>', currentCatId, currentTitle)
 
   const isSelected = currentCatId === value
 
@@ -42,15 +43,17 @@ function CategoryItem({ label, icon: Icon, value }: CategoryItemProps) {
   }
 
   return (
-    <button
-      onClick={onClick}
-      className={cn(
-        'flex items-center gap-x-2 rounded-full border-slate-200 px-4 py-2 transition hover:bg-muted',
-        isSelected && 'border-slate-800 bg-sky-500/20 text-gray-900'
-      )}>
-      {Icon && <Icon size={20} />}
-      <div className={'truncate'}>{label}</div>
-    </button>
+    <Suspense>
+      <button
+        onClick={onClick}
+        className={cn(
+          'flex items-center gap-x-2 rounded-full border border-slate-200 px-4 py-2 transition hover:bg-muted',
+          isSelected && 'border-slate-800 bg-sky-500/20 text-gray-900'
+        )}>
+        {Icon && <Icon size={20} />}
+        <div className={'truncate'}>{label}</div>
+      </button>
+    </Suspense>
   )
 }
 
