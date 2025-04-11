@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import { db } from '@/lib/db'
 import Categories from '@search/_components/categories'
+import SearchInput from '@/components/search-input'
 
 async function SearchPage(props: object) {
   const categories = await db.category.findMany({
@@ -18,9 +19,16 @@ async function SearchPage(props: object) {
   }
 
   return (
-    <div className={'p-6'}>
-      <Categories items={categories} />
-    </div>
+    <>
+      <Suspense>
+        <div className={'mb block px-6 pt-6 md:mb-0 md:hidden'}>
+          <SearchInput />
+        </div>
+      </Suspense>
+      <div className={'p-6'}>
+        <Categories items={categories} />
+      </div>
+    </>
   )
 }
 

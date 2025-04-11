@@ -31,6 +31,7 @@ function Categories({ items }: CategoriesProps) {
     return <div>No categories available</div>
   }
 
+  // console.log('categories_raw', items)
   return (
     <div className={'flex items-center gap-x-2 overflow-x-auto pb-2'}>
       {items.map(item => (

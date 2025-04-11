@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { LogOut } from 'lucide-react'
 import Link from 'next/link'
+import SearchInput from '@/components/search-input'
 
 function NavbarRoutes(props: object) {
   const pathname = usePathname()
@@ -16,25 +17,33 @@ function NavbarRoutes(props: object) {
 
   const isTeacherPage = pathname?.startsWith('/teacher')
   const isPlayerPage = pathname?.includes('/chapter')
+  const isSearchPage = pathname?.includes('/search')
 
   return (
-    <div className={'ml-auto flex gap-x-2'}>
-      {isTeacherPage || isPlayerPage ? (
-        <Link href={'/'}>
-          <Button size={'sm'} variant={'ghost'}>
-            <LogOut className={'mr-2 h-4 w-4'} />
-            Exit
-          </Button>
-        </Link>
-      ) : (
-        <Link href={'/teacher/courses'}>
-          <Button size={'sm'} variant={'ghost'}>
-            Teacher mode
-          </Button>
-        </Link>
+    <>
+      {isSearchPage && (
+        <div className={'hidden md:block'}>
+          <SearchInput />
+        </div>
       )}
-      {isClient && <UserButton afterSignOutUrl={'/'} />}
-    </div>
+      <div className={'ml-auto flex gap-x-2'}>
+        {isTeacherPage || isPlayerPage ? (
+          <Link href={'/'}>
+            <Button size={'sm'} variant={'ghost'}>
+              <LogOut className={'mr-2 h-4 w-4'} />
+              Exit
+            </Button>
+          </Link>
+        ) : (
+          <Link href={'/teacher/courses'}>
+            <Button size={'sm'} variant={'ghost'}>
+              Teacher mode
+            </Button>
+          </Link>
+        )}
+        {isClient && <UserButton afterSignOutUrl={'/'} />}
+      </div>
+    </>
   )
 }
 

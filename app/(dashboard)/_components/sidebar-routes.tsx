@@ -3,6 +3,7 @@ import React from 'react'
 import { BarChart, Compass, Layout, List } from 'lucide-react'
 import SidebarItem, { SidebarItemProps } from '@/app/(dashboard)/_components/sidebar-item'
 import { usePathname } from 'next/navigation'
+import SearchInput from '@/components/search-input'
 
 const guestRoutes = [
   {
@@ -33,16 +34,19 @@ const teacherRoutes = [
 function SidebarRoutes(props: object) {
   const pathname = usePathname()
   const isTeacherPage = pathname?.includes('/teacher')
+
   const routes: Array<SidebarItemProps> = isTeacherPage ? teacherRoutes : guestRoutes
 
   return (
-    <div className={'flex w-full flex-col'}>
-      {routes.map((route, index) => (
-        <div key={route.href}>
-          <SidebarItem {...route} />
-        </div>
-      ))}
-    </div>
+    <>
+      <div className={'flex w-full flex-col'}>
+        {routes.map((route, index) => (
+          <div key={route.href}>
+            <SidebarItem {...route} />
+          </div>
+        ))}
+      </div>
+    </>
   )
 }
 
