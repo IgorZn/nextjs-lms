@@ -20,7 +20,7 @@ function CategoryItem({ label, icon: Icon, value }: CategoryItemProps) {
 
   const currentCatId = searchParams.get('categoryId')
   const currentTitle = searchParams.get('title')
-  console.log('currentCatId, currentTitle>>>', currentCatId, currentTitle)
+  // console.log('currentCatId, currentTitle>>>', currentCatId, currentTitle)
 
   const isSelected = currentCatId === value
 

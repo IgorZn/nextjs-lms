@@ -2,12 +2,29 @@ import React, { Suspense } from 'react'
 import { db } from '@/lib/db'
 import Categories from '@search/_components/categories'
 import SearchInput from '@/components/search-input'
+import { getCourses } from '@/actions/get-courses'
+import { auth } from '@clerk/nextjs/server'
+import { redirect } from 'next/navigation'
+import CoursesList from '@/components/courses-list'
 
-async function SearchPage(props: object) {
+interface SearchPageProps {
+  searchParams: { title: string; categoryId: string }
+}
+
+async function SearchPage({ searchParams }: SearchPageProps) {
+  const { userId } = await auth()
+  if (!userId) return redirect('/')
+
   const categories = await db.category.findMany({
     orderBy: {
       name: 'asc',
     },
+  })
+
+  console.log(userId, ' searchParams>>>', await searchParams)
+  const courses = await getCourses({
+    userId,
+    ...(await searchParams),
   })
 
   if (!categories || categories.length === 0) {
@@ -27,6 +44,7 @@ async function SearchPage(props: object) {
       </Suspense>
       <div className={'p-6'}>
         <Categories items={categories} />
+        <CoursesList items={courses} />
       </div>
     </>
   )
