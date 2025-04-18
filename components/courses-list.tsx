@@ -2,13 +2,17 @@ import React from 'react'
 import { Category, Course } from '@prisma/client'
 import CourseCard from '@/components/course-card'
 
-type CourseListProps = Course[] & {
+type CourseWithProgressListProps = Course & {
   category: Category | null
   chapters: { id: string }[]
   progress: number | null
 }
 
-function CoursesList({ items }: CourseListProps[]) {
+interface CourseListProps {
+  items: CourseWithProgressListProps[]
+}
+
+function CoursesList({ items }: CourseListProps) {
   return (
     <div>
       <div className={'grid gap-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5'}>

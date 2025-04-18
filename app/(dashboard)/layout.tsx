@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import Sidebar from '@/app/(dashboard)/_components/sidebar'
 import Navbar from '@/app/(dashboard)/_components/navbar'
 
@@ -11,7 +11,9 @@ function DashboardLayout({ children }: Readonly<{ children: React.ReactNode }>) 
       <div className={'fixed inset-y-0 z-50 hidden h-full w-56 flex-col md:flex'}>
         <Sidebar />
       </div>
-      <main className={'h-full pt-[85px] sm:pl-8 md:pl-60'}>{children}</main>
+      <Suspense>
+        <main className={'h-full pt-[85px] sm:pl-8 md:pl-60'}>{children}</main>
+      </Suspense>
     </div>
   )
 }

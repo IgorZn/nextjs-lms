@@ -21,7 +21,7 @@ async function SearchPage({ searchParams }: SearchPageProps) {
     },
   })
 
-  console.log(userId, ' searchParams>>>', await searchParams)
+  // console.log(userId, ' searchParams>>>', await searchParams)
   const courses = await getCourses({
     userId,
     ...(await searchParams),
@@ -37,12 +37,10 @@ async function SearchPage({ searchParams }: SearchPageProps) {
 
   return (
     <>
-      <Suspense>
-        <div className={'mb block px-6 pt-6 md:mb-0 md:hidden'}>
-          <SearchInput />
-        </div>
-      </Suspense>
-      <div className={'p-6'}>
+      <div className={'mb block px-6 pt-6 md:mb-0 md:hidden'}>
+        <SearchInput />
+      </div>
+      <div className={'space-y-4 p-6'}>
         <Categories items={categories} />
         <CoursesList items={courses} />
       </div>
