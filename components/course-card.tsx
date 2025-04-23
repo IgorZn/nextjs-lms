@@ -17,7 +17,7 @@ interface CourseCardProps {
 
 function CourseCard({ id, title, imageUrl, chaptersLength, category, progress, price }: CourseCardProps) {
   return (
-    <Link href={`/course/${id}`}>
+    <Link href={`/courses/${id}`}>
       <div className={'group h-full overflow-hidden rounded-lg border p-3 transition hover:shadow-sm'}>
         <div className={'relative aspect-video w-full overflow-hidden rounded-md'}>
           <Image className={'object-cover'} src={imageUrl as string} alt={title} fill />
