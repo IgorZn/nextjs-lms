@@ -35,6 +35,22 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 
+## Notes
+
 ### Source
 
 [LMS](https://github.com/Awais512/LMS)
+
+### Reset DB prisma
+```shell
+npx prisma migrate reset --force
+
+# after reset you have to do it
+npx prisma db push
+
+# load seed data
+tsx scripts/seed.ts
+
+# run dev
+npm run dev
+```
