@@ -9,7 +9,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "prisma generate && prisma db push"
+    "updateDb": "prisma migrate dev && prisma db push"
   },
   "dependencies": {
     "@clerk/nextjs": "6.12.0",

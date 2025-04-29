@@ -87,7 +87,7 @@ model MuxData {
 
   chapterId String  @unique
   chapter   Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
-}
+}c
 
 model UserProgress {
   id     String @id @default(uuid())
@@ -95,6 +95,8 @@ model UserProgress {
 
   chapterId String
   chapter   Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+
+  isCompleted Boolean @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
